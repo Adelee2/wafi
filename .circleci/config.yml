@@ -82,20 +82,12 @@ jobs:
             kubectl apply -n default-temporalhelloworkflow -f ~/project/.circleci/k8s/deployment.yml
             kubectl get deployments
       - run:
-          name: Accessing the Application through LoadBalancer
+          name: Accessing the Application
           command: |
               kubectl apply -n default-temporalhelloworkflow -f ~/project/.circleci/k8s/service.yml
               # wait till the loadbalancer service is ready
               sleep 100
               kubectl get all --namespace default-temporalhelloworkflow
-
-      # - run:
-      #     name: Run k8s by port forwarding and Assign an fixed EIP to LoadBalancer IP
-      #     command: |
-      #         kubectl port-forward --address 0.0.0.0 service/webapp 3000:80 -n default-temporalhelloworkflow
-      #         # kubectl patch service webapp  -p '{"spec": {"type": "LoadBalancer", "externalIPs":["172.10.2.10"]}}'
-      #         #kubectl get services
-      
       - destroy-k8s
      
 workflows:
