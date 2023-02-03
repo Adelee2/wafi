@@ -17,7 +17,7 @@ commands:
 jobs:
   build_dockerfile:
     docker:
-      - image: cimg/base
+      - image: cimg/base:2023.02
     steps:
       - checkout
       - setup_remote_docker
