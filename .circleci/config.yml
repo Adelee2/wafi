@@ -94,5 +94,5 @@ workflows:
   default:
     jobs:
       - build_dockerfile
-      - deploy_to_kubernetes:
-            requires: [build_dockerfile]
+      # - deploy_to_kubernetes:
+      #       requires: [build_dockerfile]
