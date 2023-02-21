@@ -26,11 +26,6 @@ jobs:
           context: .
           push: true
           tags: docker.io/${{ secrets.DOCKER_USERNAME }}/adeleye_wafi:${{ github.sha }}
-  deploy:
-    if: ${{ github.event.pull_request.merged }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
       - name: Install kubectl
         run: |
           sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2 curl
@@ -41,5 +36,22 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f ~/.circleci/k8s/deployment.yml
-          kubectl get deployments
           kubectl apply -f ~/.circleci/k8s/service.yml
+          kubectl get deployments
+  # deploy:
+  #   if: ${{ github.event.pull_request.merged }}
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Install kubectl
+  #       run: |
+  #         sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2 curl
+  #         curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+  #         echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+  #         sudo apt-get update
+  #         sudo apt-get install -y kubectl
+  #     - name: Deploy to Kubernetes
+  #       run: |
+  #         kubectl apply -f ~/.circleci/k8s/deployment.yml
+  #         kubectl get deployments
+  #         kubectl apply -f ~/.circleci/k8s/service.yml
